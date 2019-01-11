@@ -1,9 +1,11 @@
-var express = require('express');
-var router = express.Router();
+const routes = require('express').Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+/* GET home page. came from build of frontend */
+routes.get('/', function(req, res, next) {
+  res.sendFile(path.join(__dirname, '../public', 'index.html'))
 });
 
-module.exports = router;
+const services = require('./services');
+routes.use('/services', services);
+
+module.exports = routes;
