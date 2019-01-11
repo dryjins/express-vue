@@ -1,0 +1,4 @@
+# ignore node_moduels and idea settings folder
+.idea/
+backend/node_modules
+frontend/node_modules
