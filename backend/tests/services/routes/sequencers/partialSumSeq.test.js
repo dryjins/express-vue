@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 
-const {partialSumSeq} = require('../../../routes/services/sequencers/partialSumSeq');
+const {partialSumSeq} = require('../../../../routes/services/sequencers/partialSumSeq');
 
 describe('PartialSum Sequencer', function () {
   describe('partialSumSeq(1, 3, 7, 2, 0) function', function () {

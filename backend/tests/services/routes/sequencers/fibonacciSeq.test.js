@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 
-const {fibonacciSeq} = require('../../../routes/services/sequencers/fibonacciSeq');
+const {fibonacciSeq} = require('../../../../routes/services/sequencers/fibonacciSeq');
 
 describe('Fibonacci Sequencer', function () {
   describe('fibonacciSeq() function', function () {
