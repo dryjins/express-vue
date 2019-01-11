@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 
-const {factorialSeq} = require('../../../../routes/services/sequencers/factorialSeq');
+const {factorialSeq} = require('../../../routes/services/sequencers/factorialSeq');
 
 describe('Factorial Sequencer', function () {
   describe('factorialSeq() function', function () {
