@@ -80,6 +80,7 @@
 /* eslint-disable */
 
 import ApiHandler from '../services/ApiHandler';
+import EventBus from '../services/EventBus';
 
 export default {
   name: 'Menu',
@@ -123,20 +124,13 @@ export default {
         if (d.active) {
           self.req.sequencer = d.name;
           argsFlag = d.args;
+          this.args = argsFlag ? this.args : undefined;
         }
       });
       this.pipelines.forEach((d) => {
         if (d.active) self.req.pipelines.push(d.name);
       });
       if (argsFlag) this.req.args = this.args ? this.args.split(',') : [];
-
-      // create generator label
-      this.generator = '';
-      this.generator += this.req.sequencer;
-      if (this.req.pipelines.length !== 0)
-        this.generator += '-' + this.req.pipelines.join('-');
-      if (this.req.args.length !== 0)
-        this.generator += '-' + this.req.args.join(',');
 
       // call postGenerator to invoke
       ApiHandler.postGenerator(this.req);
@@ -147,6 +141,18 @@ export default {
       ApiHandler.getGeneratorNext();
     },
   },
+  mounted() {
+    let self = this;
+    EventBus.$on('postGenerator', function () {
+      // create generator label when postGenerator res is okay
+      self.generator = '';
+      self.generator += self.req.sequencer;
+      if (self.req.pipelines.length !== 0)
+        self.generator += '-' + self.req.pipelines.join('-');
+      if (self.req.args.length !== 0)
+        self.generator += '-' + self.req.args.join(',');
+    });
+  }
 };
 </script>
 

@@ -1,5 +1,7 @@
 import { mount } from '@vue/test-utils';
 import Menu from '@/components/Menu';
+import ApiHandler from '@/services/ApiHandler';
+
 
 describe('Menu.vue', () => {
   // Evaluate the results of functions in
@@ -46,6 +48,17 @@ describe('Menu.vue', () => {
 
     expect(vm.req).to.deep
       .equal({ sequencer: 'rangeSeq', pipelines: ['isEven'], args: ['1', '2'] });
+  });
+
+  it('should changes data.generator when postGenerator event emitted', () => {
+    const wrapper = mount(Menu);
+    const vm = wrapper.vm;
+    const param = { sequencer: 'rangeSeq', pipelines: ['isEven'], args: ['1', '2'] };
+    ApiHandler.postGenerator(param)
+      .then(() => {
+        expect(vm.generator).to.deep
+          .equal('rangeSeq-isEven-1,2');
+      });
   });
 
   it('should render correct contents', () => {

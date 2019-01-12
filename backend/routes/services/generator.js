@@ -20,10 +20,24 @@ function generator(sequencer, pipelines, ...args) {
 }
 
 services.post('/generator', function (req, res) {
+  const testArgs = (seq) => {
+    let test = true;
+    seq.forEach(item => {
+      if (isNaN(item)) {
+        test = false;
+      }
+    });
+    return test;
+  }
   if (!req.body.sequencer) {
     res.status(500);
     res.send({message: 'The sequencer parameter is required.'});
-  } else {
+  }
+  if (!testArgs(req.body.args)){
+    res.status(500);
+    res.send({message: 'The arguments should be comma separated numbers'});
+  }
+  else {
     currentGen = generator(sequencers[req.body.sequencer], req.body.pipelines.map(p => {
       return pipelines[p]
     }), ...req.body.args);

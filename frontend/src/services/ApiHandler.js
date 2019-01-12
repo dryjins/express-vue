@@ -10,7 +10,7 @@ axios.interceptors.response.use(
   function (error) {
     // handle error
     if (error.response) {
-      alert(error.response.data.message);
+      error.response.data.message ? alert(error.response.data.message) : alert(error.response.statusText);
     } else if (error.request) {
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
