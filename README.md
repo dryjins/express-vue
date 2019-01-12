@@ -1,4 +1,4 @@
-# Express - Vue FullStack 
+# Express - Vue.js fullstack example
 1. [Live example](#Live)
 1. [About](#About)
 1. [Install](#Install)
