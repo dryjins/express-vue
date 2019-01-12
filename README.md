@@ -8,8 +8,8 @@
     2. [GET services/generator/next](#get)
   
 ## Live example <a name="Live"></a>
+https://calm-wave-72661.herokuapp.com/
 ![demo.gif](./img/demo.gif)
-> Node.js  > 10.4.0
 ## About <a name="About"></a>
 This app is working example using Express, Vue.js and D3.js by TDD style. The app generates sequence of number 
 then displays them by bar chart. It also has pipeline to process sequences. Followings are list of sequencer and pipeline.
