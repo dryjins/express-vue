@@ -13,7 +13,6 @@
 <script>
 /* eslint-disable */
 import * as d3 from 'd3';
-import ApiHandler from '../services/ApiHandler';
 import EventBus from '../services/EventBus';
 import JQuery from 'jquery';
 
@@ -191,8 +190,8 @@ export default {
 
     // add event handlers
     // listen getGeneratorNext event to update data
-    EventBus.$on('getGeneratorNext', function () {
-      self.d = clone(ApiHandler.data.sequence).map((d, i) => {
+    EventBus.$on('getGeneratorNext', function (data) {
+      self.d = clone(data).map((d, i) => {
         d.index = i;
         // for isEven data format
         if (d.value.status !== undefined) {
@@ -208,8 +207,8 @@ export default {
     });
 
     // listen postGenerator to reset data
-    EventBus.$on('postGenerator', function () {
-      self.d = [];
+    EventBus.$on('postGenerator', function (data) {
+      self.d = data;
       self.updateChart();
     });
 

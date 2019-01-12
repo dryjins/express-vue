@@ -3,7 +3,7 @@ module.exports = {
     let s = 2n;
 
     const isPrime = function (p) {
-      // It is  possible to reduce time complexity here if we implement root square for BigInt.
+      // It is  possible to reduce time complexity for testing prime number, if we implement root square for BigInt.
       for (let i = 2n; i * i <= p; i++) {
         if (p % i === 0n) return false;
       }
@@ -21,7 +21,7 @@ module.exports = {
         default: {
           while (true) {
             let o = s;
-            s += 2n;
+            s += 2n; // skip even number
             if (isPrime(o)) {
               return o;
             }

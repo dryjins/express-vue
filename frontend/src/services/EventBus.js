@@ -1,3 +1,6 @@
 import Vue from 'vue';
+import ApiHandler from './ApiHandler';
 
-export default new Vue();
+const EventBus = new Vue();
+ApiHandler.init(EventBus);
+export default EventBus;

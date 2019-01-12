@@ -78,8 +78,6 @@
 
 <script>
 /* eslint-disable */
-
-import ApiHandler from '../services/ApiHandler';
 import EventBus from '../services/EventBus';
 
 export default {
@@ -133,12 +131,14 @@ export default {
       if (argsFlag) this.req.args = this.args ? this.args.split(',') : [];
 
       // call postGenerator to invoke
-      ApiHandler.postGenerator(this.req);
+      //ApiHandler.postGenerator(this.req);
+      EventBus.$emit('callPostGenerator',this.req);
       return this.req;
     },
     clickNext() {
       // call getGeneratorNext for the next value;
-      ApiHandler.getGeneratorNext();
+      //ApiHandler.getGeneratorNext();
+      EventBus.$emit('callGetGeneratorNext');
     },
   },
   mounted() {
