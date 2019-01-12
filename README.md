@@ -19,6 +19,7 @@ then displays them by bar chart. It also has pipeline to process sequences. Foll
   - fibonacci
   - partialSum
   - prime
+  - range
 - pipeline
   - accumulator
   - isEven
