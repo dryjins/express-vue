@@ -33,17 +33,13 @@ This would run at http://localhost:3000
 >
 > npm install
 >
-> cd ../frontend
->  
-> npm install
->
-> cd ../backend
->
 > npm start
 
 ### Build 
 If you change frontend, you need to build it again. The build destination folder is backend/public.
 > cd frontend
+> 
+> npm install
 >
 > npm run build
 
