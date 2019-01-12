@@ -62,9 +62,10 @@ All communication is based on this method through EventBus.
 ### API <a name="API"></a>
 API uses BigInt as base number type. BigInt can't be mixed with javascript number type.
 #### POST services/generator <a name="post"></a>
-This api setup generator requires follower parameters in the request body.
-> parameters
-> { sequencer: '', pipelines: [], args: [] }
+This api setups the generator which requires parameters in the request body.
+> parameters ex)
+>
+> { sequencer: 'factorialSeq', pipelines: [], args: [] }
 >
 > 200 response ex )
 >
