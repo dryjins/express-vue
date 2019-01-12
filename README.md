@@ -73,4 +73,5 @@ This api setup generator requires follower parameters in the request body.
 #### GET services/generator/next <a name="get"></a>
 This api returns the next value of current generator in the server. 
 > 200 response ex) 
+>
 > {"value":"1"}
