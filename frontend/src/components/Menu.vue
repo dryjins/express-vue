@@ -50,6 +50,7 @@
             <li class="w-100 ml-auto mr-auto nav-item input-group-sm">
               <input class="form-control rounded-0 input-args"
                      placeholder="args for partialSum(1,2,...n) or Range(start, step), Ex) 1, 2"
+                     :disabled="isDisabled"
                      v-model="args">
             </li>
           </ul>
@@ -94,14 +95,20 @@ export default {
       ],
       req: {sequencer: '', pipelines: [], args: []},
       args: undefined,
-      generator: 'None'
+      generator: 'None',
+      isDisabled: false
     };
   },
   methods: {
     clickSeq(seq) {
+      let self = this;
       // mark sequencer item using active
+      self.args = undefined;
       this.sequencers.forEach((d) => {
         d.active = seq === d.name;
+        if (d.active) {
+          self.isDisabled = !d.args;
+        }
       });
     },
     clickPipe(pipe) {
@@ -114,21 +121,19 @@ export default {
     },
     clickGenerate() {
       const self = this;
-
+      this.req ={sequencer: '', pipelines: [], args: []};
       // create request parameter object
       this.req.pipelines = [];
-      let argsFlag = false; // args checking flag
       this.sequencers.forEach((d) => {
         if (d.active) {
           self.req.sequencer = d.name;
-          argsFlag = d.args;
-          this.args = argsFlag ? this.args : undefined;
+          self.args = self.isDisabled ? undefined : self.args;
         }
       });
       this.pipelines.forEach((d) => {
         if (d.active) self.req.pipelines.push(d.name);
       });
-      if (argsFlag) this.req.args = this.args ? this.args.split(',') : [];
+      if (!this.isDisabled) this.req.args = this.args ? this.args.split(',') : [];
 
       // call postGenerator to invoke
       //ApiHandler.postGenerator(this.req);
