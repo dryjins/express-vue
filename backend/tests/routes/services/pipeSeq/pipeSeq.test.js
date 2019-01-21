@@ -81,7 +81,7 @@ describe('Pipe Sequencer', function () {
   describe('rangeSeq(0, 9007199254740991) function, accumulator and isEven pipelines', function () {
     BigInt.prototype.toJSON = function() {return this.toString(); };
     it('Should error out if 0th call is not 27021597764222973', function () {
-      let seq = pipeSeq(sequencers.rangeSeq, 0, 9007199254740991)
+      let seq = pipeSeq(sequencers.rangeSeq, '0', '9007199254740991')
         .pipeline(pipelines.accumulator)
         .pipeline(pipelines.isEven)
         .invoke();
