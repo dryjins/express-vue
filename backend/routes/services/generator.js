@@ -2,8 +2,6 @@ const services = require('express').Router();
 const {pipeSeq} = require('./pipeSeq/pipeSeq');
 const sequencers = require('./sequencers');
 const pipelines = require('./pipeSeq/pipelines');
-var currentGen; // store latest generator created by post api
-
 
 function generator(sequencer, pipelines, ...args) {
   // generator takes sequencer(:function), pipelines(:list), rest arguments, args(:list)
@@ -24,6 +22,7 @@ function generator(sequencer, pipelines, ...args) {
 // POST API
 // req.body {sequencer, pipelines(optional), args(optional)}
 services.post('/generator', function (req, res) {
+  console.log(req.sessionID)
   const testArgs = (seq) => {
     // test arguments are valid numbers.
     let test = true;
@@ -47,21 +46,30 @@ services.post('/generator', function (req, res) {
   }
   else {
     // store generator if req is okay
-    currentGen = generator(sequencers[req.body.sequencer], req.body.pipelines.map(p => {
+    let currentGen = generator(sequencers[req.body.sequencer], req.body.pipelines.map(p => {
       return pipelines[p]
     }), ...req.body.args);
     // send information about created generator
-    res.status(200).json({
+    req.app.locals.currentGen[req.session.id] = currentGen;
+    let generatorName = req.body.sequencer;
+    if (req.body.pipelines.length !== 0)
+      generatorName += '-' + req.body.pipelines.join('-');
+    if (req.body.args.length !== 0)
+      generatorName += '-' + req.body.args.join(',');
+    req.session.generatorName = generatorName;
+    res.status(200).send({
       message: req.body.sequencer
         + ' is generated with args (' + req.body.args
         + '), pipelines ('
-        + req.body.pipelines + ')'
+        + req.body.pipelines + ')',
+      generatorName
     })
   }
 });
 
 // GET API
 services.get('/generator/next', function (req, res) {
+  let currentGen = req.app.locals.currentGen[req.session.id];
   if (!currentGen) {
     // send error if there is no stored generator.
     res.status(500);
