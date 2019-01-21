@@ -143,15 +143,16 @@ export default {
   },
   mounted() {
     let self = this;
-    EventBus.$on('postGenerator', function () {
+    EventBus.$on('postGenerator', function (data) {
       // create generator label when postGenerator res is okay
-      self.generator = '';
-      self.generator += self.req.sequencer;
-      if (self.req.pipelines.length !== 0)
-        self.generator += '-' + self.req.pipelines.join('-');
-      if (self.req.args.length !== 0)
-        self.generator += '-' + self.req.args.join(',');
+      self.generator = data.genName;
     });
+    // if there is a generator previously created, set it into the name label
+    EventBus.$on('getGenerator', function (generatorName) {
+      // create generator label when getGenerator res is okay
+      self.generator = generatorName;
+    });
+    EventBus.$emit('callGetGenerator');
   }
 };
 </script>

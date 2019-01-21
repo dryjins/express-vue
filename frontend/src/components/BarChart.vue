@@ -208,7 +208,7 @@ export default {
 
     // listen postGenerator to reset data
     EventBus.$on('postGenerator', function (data) {
-      self.d = data;
+      self.d = data.sequence;
       self.updateChart();
     });
 

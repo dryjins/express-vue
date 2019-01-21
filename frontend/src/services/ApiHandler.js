@@ -6,8 +6,9 @@ const api = {
   data: {
     lastParam: {},
     sequence: [],
+    genName: ''
   },
-  init:function(EventBus){
+  init: function (EventBus) {
     let self = this;
     axios.interceptors.response.use(
       function (response) {
@@ -34,9 +35,13 @@ const api = {
     EventBus.$on('callPostGenerator', function (param) {
       self.postGenerator(param);
     });
+    EventBus.$on('callGetGenerator', function () {
+      self.getGenerator();
+    });
     EventBus.$on('callGetGeneratorNext', function () {
       self.getGeneratorNext();
     });
+
   },
   postGenerator(param) {
     const url = 'services/generator';
@@ -46,7 +51,21 @@ const api = {
         // reset api data when res is okay
         if (res && res.status === 200) {
           this.data.sequence = [];
-          this.EventBus.$emit('postGenerator', this.data.sequence);
+          let genName = this.data.genName = res.data.genName;
+          this.EventBus.$emit('postGenerator', {
+            sequence: this.data.sequence,
+            genName
+          });
+        }
+      });
+  },
+  getGenerator() {
+    return axios.get('services/generator')
+      .then((res) => {
+        if (res && res.status === 200) {
+          let genName = this.data.genName = res.data.genName;
+          // publish event if value is not undefined
+          this.EventBus.$emit('getGenerator', genName);
         }
       });
   },

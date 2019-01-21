@@ -19,10 +19,10 @@ function generator(sequencer, pipelines, ...args) {
     }
   };
 }
+
 // POST API
 // req.body {sequencer, pipelines(optional), args(optional)}
 services.post('/generator', function (req, res) {
-  console.log(req.sessionID)
   const testArgs = (seq) => {
     // test arguments are valid numbers.
     let test = true;
@@ -39,30 +39,26 @@ services.post('/generator', function (req, res) {
     res.send({message: 'The sequencer parameter is required.'});
   }
 
-  if (!testArgs(req.body.args)){
+  if (!testArgs(req.body.args)) {
     // return error if testArgs fails
     res.status(500);
     res.send({message: 'The arguments should be comma separated numbers'});
-  }
-  else {
+  } else {
     // store generator if req is okay
-    let currentGen = generator(sequencers[req.body.sequencer], req.body.pipelines.map(p => {
+    let gen = generator(sequencers[req.body.sequencer], req.body.pipelines.map(p => {
       return pipelines[p]
     }), ...req.body.args);
+
     // send information about created generator
-    req.app.locals.currentGen[req.session.id] = currentGen;
-    let generatorName = req.body.sequencer;
+    let genName = req.body.sequencer;
     if (req.body.pipelines.length !== 0)
-      generatorName += '-' + req.body.pipelines.join('-');
+      genName += '-' + req.body.pipelines.join('-');
     if (req.body.args.length !== 0)
-      generatorName += '-' + req.body.args.join(',');
-    req.session.generatorName = generatorName;
+      genName += '-' + req.body.args.join(',');
+    req.app.locals.currentGen[req.session.id] = {gen, genName};
     res.status(200).send({
-      message: req.body.sequencer
-        + ' is generated with args (' + req.body.args
-        + '), pipelines ('
-        + req.body.pipelines + ')',
-      generatorName
+      message: `${req.body.sequencer} is generated with args ('${req.body.args}'), pipelines (${req.body.pipelines})`,
+      genName: genName
     })
   }
 });
@@ -75,7 +71,7 @@ services.get('/generator/next', function (req, res) {
     res.status(500);
     res.send({message: 'The generator is not ready.'});
   } else {
-    let value = currentGen.next();
+    let value = currentGen.gen.next();
     if (value === undefined) {
       res.status(500);
       // if generator does not have values anymore return ot of values error.
@@ -86,4 +82,17 @@ services.get('/generator/next', function (req, res) {
 
   }
 });
+
+// check a previous generator for the session.
+services.get('/generator', function (req, res) {
+  let currentGen = req.app.locals.currentGen[req.session.id];
+  if (!currentGen) {
+    // send 'None' text if there is no generator
+    res.status(200);
+    res.send({genName: 'None'});
+  } else {
+    res.status(200).send({genName:currentGen.genName});
+  }
+});
+
 module.exports = services;

@@ -46,10 +46,19 @@ app.use(function (req, res, next) {
   });
   next();
 });
+
+// ignore favicon
+function ignoreFavicon(req, res, next) {
+  if (req.originalUrl === '/favicon.ico') {
+    res.status(204).json({nope: true});
+  } else {
+    next();
+  }
+}
+app.use(ignoreFavicon);
+
 // add routes
-app.use('/', routes)
-
-
+app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
