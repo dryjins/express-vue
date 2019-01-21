@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const history = require('connect-history-api-fallback')
 var session = require('express-session');
-var FileStore = require('session-file-store')(session);
 
 
 BigInt.prototype.toJSON = function () {
