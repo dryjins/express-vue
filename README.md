@@ -8,7 +8,7 @@
     2. [GET services/generator/next](#get)
   
 ## Live example <a name="Live"></a>
-https://mysterious-harbor-34687.herokuapp.com/
+https://express-vue-demo.herokuapp.com/
 ![demo.gif](./img/demo.gif)
 ## About <a name="About"></a>
 This app is working example using Express, Vue.js and D3.js by TDD style. The app generates sequence of number 

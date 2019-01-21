@@ -96,7 +96,7 @@ export default {
       req: {sequencer: '', pipelines: [], args: []},
       args: undefined,
       generator: 'None',
-      isDisabled: false
+      isDisabled: true
     };
   },
   methods: {
